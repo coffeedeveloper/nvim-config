@@ -17,6 +17,12 @@ map("i", "<C-b>", "<Left>", { desc = "Move backward one char" })
 map("i", "<C-n>", "<Down>", { desc = "Next line" })
 map("i", "<C-p>", "<Up>", { desc = "Previous line" })
 
+-- Vertical terminal (right split)
+map("n", "<leader>fv", function()
+  local count = vim.v.count ~= 0 and vim.v.count or 1
+  Snacks.terminal(nil, { id = count, cwd = LazyVim.root(), win = { position = "right" } })
+end, { desc = "Terminal Vertical (Root Dir)" })
+
 -- Delete operations
 map("i", "<C-d>", "<Del>", { desc = "Delete character forward" })
 -- 全局兜底
