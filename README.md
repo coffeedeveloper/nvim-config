@@ -2,8 +2,9 @@
 
 My personal Neovim configuration, built on top of [LazyVim](https://github.com/LazyVim/LazyVim).
 
-It adds a Catppuccin theme that follows light/dark mode, a minimap, macOS / Emacs-style
-shortcuts in insert mode, and a handful of LSP and completion tweaks.
+It adds a Catppuccin theme that follows light/dark mode, a minimap, a symbol outline,
+inline git blame, prettier TypeScript errors, macOS / Emacs-style shortcuts in insert
+mode, and a handful of LSP and completion tweaks.
 
 ## Requirements
 
@@ -73,6 +74,10 @@ Normal mode:
 | ------------ | ----------------------------------- |
 | `<leader>fv` | Open a terminal in a right split    |
 | `<leader>mm` | Toggle the minimap                  |
+| `<leader>cs` | Toggle the symbol outline           |
+| `<leader>ub` | Toggle inline git blame             |
+| `<leader>dd` | Toggle better TS error popup        |
+| `<leader>dx` | Jump to TS error definition         |
 
 ### Plugins (`lua/plugins/`)
 
@@ -82,12 +87,15 @@ Normal mode:
   falling through to cursor motion when the menu is hidden
 - **nvim-lspconfig** — disables the default `<C-k>` signature help (so `<C-k>` can kill
   to EOL) and enables full TypeScript inlay hints via `tsgo`
+- **gitsigns** — inline blame at end of the current line (author, date, summary)
+- **better-ts-errors** — readable TypeScript error popup with object/type formatting
+  (requires global `prettier`: `npm i -g prettier`)
 - **snacks** — picker shows hidden / gitignored files (but excludes `node_modules` and `.git`)
 - **bufferline** — always visible
 
 ### LazyVim extras (`lazyvim.json`)
 
-- Editor: `mini-diff`
+- Editor: `mini-diff`, `outline`
 - Languages: `docker`, `git`, `go`, `json`, `markdown`, `python`, `sql`, `toml`,
   `typescript` (+ `biome`, `oxc`, `tsgo`), `yaml`
 
@@ -111,6 +119,8 @@ Normal mode:
         ├── lsp.lua
         ├── blink.lua
         ├── snacks.lua
+        ├── gitsigns.lua
+        ├── better-ts-errors.lua
         └── example.lua      # LazyVim starter examples (disabled)
 ```
 
