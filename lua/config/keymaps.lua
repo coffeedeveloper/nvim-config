@@ -23,8 +23,28 @@ map("n", "<leader>fv", function()
   Snacks.terminal(nil, { id = count, cwd = LazyVim.root(), win = { position = "right" } })
 end, { desc = "Terminal Vertical (Root Dir)" })
 
+-- Review the current Git working tree in Hunk, using the same floating layout as LazyGit.
+map("n", "<leader>gH", function()
+  Snacks.terminal({ "hunk", "diff" }, { cwd = LazyVim.root.git(), win = { style = "lazygit" } })
+end, { desc = "Hunk Diff (Root Dir)" })
+
 -- Delete operations
 map("i", "<C-d>", "<Del>", { desc = "Delete character forward" })
 -- 全局兜底
 map("i", "<C-k>", "<C-o>D", { desc = "Kill to end of line" })
 
+-- Copy absolute file path
+map("n", "<leader>yP", function()
+  local path = vim.api.nvim_buf_get_name(0)
+  vim.fn.setreg("+", path)
+  vim.notify(path)
+end, { desc = "Copy Absolute Path" })
+
+-- Copy file path relative to project root
+map("n", "<leader>yp", function()
+  local path = vim.api.nvim_buf_get_name(0)
+  local root = LazyVim.root()
+  local relative = vim.fs.relpath(root, path) or path
+  vim.fn.setreg("+", relative)
+  vim.notify(relative)
+end, { desc = "Copy Relative Path" })
