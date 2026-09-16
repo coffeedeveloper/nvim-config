@@ -17,6 +17,18 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.notify("Save the Markdown file before opening it in VS Code.", vim.log.levels.WARN)
         return
       end
+
+      if vim.fn.executable("open") ~= 1 then
+        vim.notify("The macOS open command is not available", vim.log.levels.ERROR)
+        return
+      end
+
+      vim.fn.system({ "open", "-Ra", "Visual Studio Code" })
+      if vim.v.shell_error ~= 0 then
+        vim.notify("Visual Studio Code is not installed", vim.log.levels.ERROR)
+        return
+      end
+
       vim.fn.jobstart({ "open", "-a", "Visual Studio Code", path }, { detach = true })
     end, { buffer = event.buf, desc = "Open Markdown in VS Code" })
   end,

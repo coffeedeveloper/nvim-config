@@ -25,7 +25,12 @@ end, { desc = "Terminal Vertical (Root Dir)" })
 
 -- Review the current Git working tree in Hunk, using the same floating layout as LazyGit.
 map("n", "<leader>gH", function()
-  Snacks.terminal({ "hunk", "diff" }, { cwd = LazyVim.root.git(), win = { style = "lazygit" } })
+  if vim.fn.executable("hunk") ~= 1 then
+    vim.notify("Hunk CLI is not installed or not available on PATH", vim.log.levels.ERROR)
+    return
+  end
+
+  Snacks.terminal({ "hunk", "diff", "HEAD" }, { cwd = LazyVim.root.git(), win = { style = "lazygit" } })
 end, { desc = "Hunk Diff (Root Dir)" })
 
 -- Delete operations
