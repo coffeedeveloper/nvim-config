@@ -7,29 +7,12 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
+-- Check English spelling in Markdown without marking CJK characters.
 vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("markdown_open_in_vscode", { clear = true }),
-  pattern = "markdown",
-  callback = function(event)
-    vim.keymap.set("n", "<leader>mo", function()
-      local path = vim.api.nvim_buf_get_name(event.buf)
-      if path == "" then
-        vim.notify("Save the Markdown file before opening it in VS Code.", vim.log.levels.WARN)
-        return
-      end
-
-      if vim.fn.executable("open") ~= 1 then
-        vim.notify("The macOS open command is not available", vim.log.levels.ERROR)
-        return
-      end
-
-      vim.fn.system({ "open", "-Ra", "Visual Studio Code" })
-      if vim.v.shell_error ~= 0 then
-        vim.notify("Visual Studio Code is not installed", vim.log.levels.ERROR)
-        return
-      end
-
-      vim.fn.jobstart({ "open", "-a", "Visual Studio Code", path }, { detach = true })
-    end, { buffer = event.buf, desc = "Open Markdown in VS Code" })
+  pattern = { "markdown", "markdown.mdx" },
+  callback = function()
+    vim.opt_local.spelllang = { "en", "cjk" }
+    vim.opt_local.spelloptions:append("camel")
+    vim.opt_local.spell = true
   end,
 })
